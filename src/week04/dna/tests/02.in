@@ -1,0 +1,21 @@
+6       A  AG AT TG AATGTATC CA
+8
+SmallA  2  0  0  0  0        0
+MediumA 5  0  1  0  0        0
+BigA    10 0  0  0  0        0
+Short   5  4  5  6  0        0
+Joe     2  1  1  1  5        1
+Alice   7  0  1  1  1        5
+Ater    1  0  3  0  0        0
+AterTwo 2  0  3  0  0        0
+10
+A
+AA
+AAAAAAAAAA
+AAAAAAAAAAAA
+ATATAT
+ATATATAA
+AAAATAAAAA
+AGAGAGAGAAAAATATATATATGTGTGTGTGTG
+AATGTATCAATGTATCAATGTATCAATGTATCAATGTATCAG
+AAAAAAATGTATCACACACACA
