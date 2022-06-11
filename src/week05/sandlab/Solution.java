@@ -1,4 +1,4 @@
-//package week05.sandlab;
+package week05.sandlab;
 
 import java.awt.*;
 import java.io.*;

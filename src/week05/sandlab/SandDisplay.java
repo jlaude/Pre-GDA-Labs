@@ -1,6 +1,6 @@
-//package week05.sandlab;
+package week05.sandlab;
 
-//import week05.sandlab.Solution;
+import week05.sandlab.Solution;
 
 import java.awt.*;
 import java.awt.event.*;
