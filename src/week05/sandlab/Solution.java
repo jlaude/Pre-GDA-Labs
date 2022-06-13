@@ -44,11 +44,10 @@ public class Solution {
 
   /** Copies each element of grid into the display. */
   public void updateDisplay() {
-    // TODO: Populate this method in step 4 and beyond.
     Color metalColor = new Color(128, 128, 128);
     Color emptySquareColor = new Color(0,0,0);
     Color yellowColor = new Color(255, 211, 0);
-    Color waterColor = new Color(175, 220, 236);
+    Color waterColor = new Color(0, 0, 255);
     for (int row = 0; row < grid.length ; row++) {
       for (int column = 0; column < grid[row].length; column++) {
         if (grid[row][column] == 0) {
@@ -66,24 +65,28 @@ public class Solution {
 
   /** Called repeatedly. Causes one random particle to maybe do something. */
   public void step() {
+    // generate random point to check on the grid
     Point randomPoint = random.getRandomPoint();
 
-    // Check that the random point is from row 0 -> last row -1
+    // Check that the random point is from row 0 -> last row
     // Checking that the random point is a column on the grid
-
     if ( randomPoint.row < grid.length && randomPoint.column < grid[0].length) {
-      // check if it's sand and the point below is empty
+
+      // check if it's sand (2) and the point below is empty (0), if so swap empty and sand
       if (grid[randomPoint.row][randomPoint.column] == 2 && randomPoint.row < grid.length -1 && grid[randomPoint.row+1][randomPoint.column] == 0) {
         grid[randomPoint.row][randomPoint.column] = 0;
         grid[randomPoint.row + 1][randomPoint.column] = 2;
       }
-      // check if it's sand and the point below is water
+
+      // check if it's sand (2) and the point below is water (3), if so swap water and sand (reason: sand sinks in water)
       else if (grid[randomPoint.row][randomPoint.column] == 2 && randomPoint.row < grid.length -1 && grid[randomPoint.row+1][randomPoint.column] == 3) {
         grid[randomPoint.row][randomPoint.column] = 3;
         grid[randomPoint.row + 1][randomPoint.column] = 2;
       }
-      // check if it's water
+
+      // check if the random point on the grid is water (3)
       else if (grid[randomPoint.row][randomPoint.column] == 3) {
+        // if it's water, generate random direction for water to fall in
         int randomDirection = random.getRandomDirection();
 
         // if the direction is 0 and point below is empty (0) fall like sand - switch positions
@@ -91,12 +94,13 @@ public class Solution {
           grid[randomPoint.row][randomPoint.column] =0;
           grid[randomPoint.row + 1][randomPoint.column] = 3;
         }
-        // if the direction is 1 and the point to the right is empty, the water particle moves to the right
+
+        // if the direction is 1, the column of the random point on the grid is the second to last column or less, and the point to the right is empty (0), the water particle moves to the right
         else if (randomDirection == 1 && randomPoint.column < grid[0].length -1 && grid[randomPoint.row][randomPoint.column + 1] == 0) {
           grid[randomPoint.row][randomPoint.column] =0;
           grid[randomPoint.row][randomPoint.column +1] = 3;
         }
-        // if the direction is 2 and the point to the left is empty, the water particle moves to the left
+        // if the direction is 2, the column of the random point on the grid is the second column or greater, and the point to the left is empty, the water particle moves to the left
         else if (randomDirection == 2 && randomPoint.column > 0 && grid[randomPoint.row][randomPoint.column - 1] == 0) {
           grid[randomPoint.row][randomPoint.column] =0;
           grid[randomPoint.row][randomPoint.column -1] = 3;
