@@ -11,8 +11,9 @@ public class Solution {
   public static final int METAL = 1;
   public static final int SAND = 2;
   public static final int WATER = 3;
+  public static final int BALLOON = 4;
 
-  public static final String[] NAMES = {"Empty", "Metal", "Sand", "Water"};
+  public static final String[] NAMES = {"Empty", "Metal", "Sand", "Water", "Balloon"};
 
   // Do not add any more fields as part of Lab 5.
   private int[][] grid;
@@ -48,6 +49,7 @@ public class Solution {
     Color emptySquareColor = new Color(0,0,0);
     Color yellowColor = new Color(255, 211, 0);
     Color waterColor = new Color(0, 0, 255);
+    Color balloonColor = new Color(237, 28, 36);
     for (int row = 0; row < grid.length ; row++) {
       for (int column = 0; column < grid[row].length; column++) {
         if (grid[row][column] == 0) {
@@ -58,6 +60,8 @@ public class Solution {
           display.setColor(row,column,yellowColor);
         } else if (grid[row][column] == 3){
           display.setColor(row,column, waterColor);
+        } else if (grid[row][column] == 4){
+          display.setColor(row,column, balloonColor);
         }
       }
     }
@@ -67,29 +71,62 @@ public class Solution {
   public void step() {
     // generate random point to check on the grid
     Point randomPoint = random.getRandomPoint();
-
     // Check that the random point is from row 0 -> last row
     // Checking that the random point is a column on the grid
     if ( randomPoint.row < grid.length && randomPoint.column < grid[0].length) {
 
-      // check if it's sand (2) and the point below is empty (0), if so swap empty and sand
-      if (grid[randomPoint.row][randomPoint.column] == 2 && randomPoint.row < grid.length -1 && grid[randomPoint.row+1][randomPoint.column] == 0) {
-        grid[randomPoint.row][randomPoint.column] = 0;
-        grid[randomPoint.row + 1][randomPoint.column] = 2;
+      //SAND (2)
+      // Check if the point is sand (2)
+      if (grid[randomPoint.row][randomPoint.column] == 2) {
+        int randomDirection = random.getRandomDirection();
+
+        // Check if the point below is empty, if so, swap empty and sand (sand falls)
+        if (randomPoint.row < grid.length - 1 && grid[randomPoint.row + 1][randomPoint.column] == 0) {
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row + 1][randomPoint.column] = 2;
+        }
+
+        // check if the point below is water (3), if so swap water and sand (reason: sand sinks in water)
+        else if (randomPoint.row < grid.length - 1 && grid[randomPoint.row + 1][randomPoint.column] == 3) {
+          grid[randomPoint.row][randomPoint.column] = 3;
+          grid[randomPoint.row + 1][randomPoint.column] = 2;
+        }
+
+        // check if the random direction is 1 (to the right), check if it's not the rightmost column, check that the point below is sand and that the point to the right is empty
+        else if(randomDirection == 1 && randomPoint.column < grid[0].length -1 && randomPoint.column > 0 && randomPoint.row < grid.length -1  && randomPoint.row > 0 && grid[randomPoint.row + 1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column + 1] == 0 && grid[randomPoint.row -1][randomPoint.column] ==0 && grid[randomPoint.row][randomPoint.column -1] ==0){
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row][randomPoint.column +1] =2;
+        }
+
+        // check if the random direction is 2 (to the left), check if it's not the leftmost column, check it's not the rightmost column, check that it isn't the bottom row, check that the point to the left is empty, check that the point below is sand
+        else if(randomDirection == 2 && randomPoint.column > 0 && randomPoint.column < grid[0].length -1 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row + 1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column - 1] == 0 && grid[randomPoint.row][randomPoint.column +1] ==0 && grid[randomPoint.row -1][randomPoint.column] == 0){
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row][randomPoint.column -1] =2;
+        }
+
+        //Check if the random direction is 1 (to the right), check that it's the leftmost column, check that it's not on the bottom nor top, check that  the row below is sand, check that the column to the left is empty
+        else if( randomDirection == 1 && randomPoint.column == 0 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row -1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column + 1] ==0){
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row][randomPoint.column +1] =2;
+
+        }
+
+        //Check if the random direction is 2 (to the left), check that it's the rightmost column, check that it's not on the bottom nor top, check that  the row below is sand, check that the column to the left is empty
+        else if( randomDirection == 1 && randomPoint.column == grid[0].length -1 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row -1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column - 1] ==0){
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row][randomPoint.column -1] =2;
+
+        }
+
       }
 
-      // check if it's sand (2) and the point below is water (3), if so swap water and sand (reason: sand sinks in water)
-      else if (grid[randomPoint.row][randomPoint.column] == 2 && randomPoint.row < grid.length -1 && grid[randomPoint.row+1][randomPoint.column] == 3) {
-        grid[randomPoint.row][randomPoint.column] = 3;
-        grid[randomPoint.row + 1][randomPoint.column] = 2;
-      }
-
+      //WATER (3)
       // check if the random point on the grid is water (3)
       else if (grid[randomPoint.row][randomPoint.column] == 3) {
         // if it's water, generate random direction for water to fall in
         int randomDirection = random.getRandomDirection();
 
-        // if the direction is 0 and point below is empty (0) fall like sand - switch positions
+        // if the direction is 0, it's from row's 0 to second to last row, and point below is empty (0) fall like sand - switch positions
         if (randomDirection == 0 && randomPoint.row < grid.length -1 && grid[randomPoint.row+1][randomPoint.column] == 0 ) {
           grid[randomPoint.row][randomPoint.column] =0;
           grid[randomPoint.row + 1][randomPoint.column] = 3;
@@ -106,6 +143,31 @@ public class Solution {
           grid[randomPoint.row][randomPoint.column -1] = 3;
         }
 
+      }
+
+      //BALLOON (4)
+      // Check if the random point on the grid is a balloon (4)
+      else if (grid[randomPoint.row][randomPoint.column] == 4){
+        // if it's a balloon, generate random direction for balloon to rise in
+        int randomDirection = random.getRandomDirection();
+
+        // if the direction is 0, it's not the top row, and nothing is above it, float up
+        if (randomDirection == 0 && randomPoint.row > 0 && grid[randomPoint.row -1][randomPoint.column] == 0) {
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row -1][randomPoint.column] = 4;
+        }
+
+        // if the direction is 1, it's not the right most column, and nothing is to the right of it, move right
+        else if (randomDirection == 1 && randomPoint.column < grid[0].length -1 && grid[randomPoint.row][randomPoint.column + 1] == 0){
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row][randomPoint.column + 1] = 4;
+        }
+
+        // if the direction is 2, it's not the first column, and nothing is to the left of it, move left
+        else if (randomDirection == 2 && randomPoint.column > 0 && grid[randomPoint.row][randomPoint.column - 1] == 0){
+          grid[randomPoint.row][randomPoint.column] = 0;
+          grid[randomPoint.row][randomPoint.column -1] = 4;
+        }
       }
     }
   }
