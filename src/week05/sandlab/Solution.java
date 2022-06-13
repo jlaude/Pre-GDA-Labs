@@ -156,11 +156,20 @@ public class Solution {
           grid[randomPoint.row][randomPoint.column +1] = 3;
         }
 
-        // verify direction is 1, verify column is third from last column, point to the right is metal, two points to the right is empty, point below is water
-        else if (randomDirection == 1 && randomPoint.row < grid.length -1 && randomPoint.column < grid[0].length -2 && grid[randomPoint.row][randomPoint.column +1] ==1 && grid[randomPoint.row][randomPoint.column + 2] == 0 && grid[randomPoint.row +1][randomPoint.column] == 3) {
-          grid[randomPoint.row][randomPoint.column] =0;
-          grid[randomPoint.row][randomPoint.column +2] = 3;
+        //have water flow around metal (to the right)
+        // verify direction is 1, verify column is second from last column, point to the right is metal, point below is water
+        else if (randomDirection == 1 && randomPoint.row < grid.length -1 && randomPoint.column < grid[0].length -1 && grid[randomPoint.row][randomPoint.column +1] ==1 && grid[randomPoint.row +1][randomPoint.column] == 3) {
+          int iterator = 1;
+          do {
+            iterator++;
+          } while (grid[randomPoint.row][randomPoint.column +iterator]== 1);
+          if(grid[randomPoint.row][randomPoint.column+iterator]==0) {
+            grid[randomPoint.row][randomPoint.column] = 0;
+            grid[randomPoint.row][randomPoint.column + iterator] = 3;
+          }
         }
+
+        //TODO: implement water flowing around metal (to the left)
 
         // if the direction is 2, the column of the random point on the grid is the second column or greater, and the point to the left is empty, the water particle moves to the left
         else if (randomDirection == 2 && randomPoint.column > 0 && grid[randomPoint.row][randomPoint.column - 1] == 0) {
