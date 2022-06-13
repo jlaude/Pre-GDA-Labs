@@ -92,18 +92,21 @@ public class Solution {
           grid[randomPoint.row + 1][randomPoint.column] = 2;
         }
 
-        // check if the random direction is 1 (to the right), check if it's not the rightmost column, check that the point below is sand and that the point to the right is empty
+        // making sand flow more naturally in empty space - to the right
+        // check if the random direction is 1 (to the right), check if it's not the rightmost column, check that the point below is sand and that the surrounding points are empty
         else if(randomDirection == 1 && randomPoint.column < grid[0].length -1 && randomPoint.column > 0 && randomPoint.row < grid.length -1  && randomPoint.row > 0 && grid[randomPoint.row + 1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column + 1] == 0 && grid[randomPoint.row -1][randomPoint.column] ==0 && grid[randomPoint.row][randomPoint.column -1] ==0){
           grid[randomPoint.row][randomPoint.column] = 0;
           grid[randomPoint.row][randomPoint.column +1] =2;
         }
 
-        // check if the random direction is 2 (to the left), check if it's not the leftmost column, check it's not the rightmost column, check that it isn't the bottom row, check that the point to the left is empty, check that the point below is sand
+        // making sand flow more naturally in empty space - to the left
+        // check if the random direction is 2 (to the left), check if it's not the leftmost column, check it's not the rightmost column, check that it isn't the bottom row, check that the surrounding points are empty, check that the point below is sand
         else if(randomDirection == 2 && randomPoint.column > 0 && randomPoint.column < grid[0].length -1 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row + 1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column - 1] == 0 && grid[randomPoint.row][randomPoint.column +1] ==0 && grid[randomPoint.row -1][randomPoint.column] == 0){
           grid[randomPoint.row][randomPoint.column] = 0;
           grid[randomPoint.row][randomPoint.column -1] =2;
         }
 
+        //Corner case: leftmost column, sand flowing more naturally in empty space
         //Check if the random direction is 1 (to the right), check that it's the leftmost column, check that it's not on the bottom nor top, check that  the row below is sand, check that the column to the left is empty
         else if( randomDirection == 1 && randomPoint.column == 0 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row -1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column + 1] ==0){
           grid[randomPoint.row][randomPoint.column] = 0;
@@ -111,11 +114,26 @@ public class Solution {
 
         }
 
+        //Corner case, rightmost column, sand flowing more naturally in empty space
         //Check if the random direction is 2 (to the left), check that it's the rightmost column, check that it's not on the bottom nor top, check that  the row below is sand, check that the column to the left is empty
-        else if( randomDirection == 1 && randomPoint.column == grid[0].length -1 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row -1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column - 1] ==0){
+        else if( randomDirection == 2 && randomPoint.column == grid[0].length -1 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row -1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column - 1] ==0){
           grid[randomPoint.row][randomPoint.column] = 0;
           grid[randomPoint.row][randomPoint.column -1] =2;
 
+        }
+
+        // sand flowing more naturally in water (to the right)
+        // check if the random direction is 1 (to the right), check if it's not the rightmost column, check that the point below is sand and that the surrounding points are water
+        else if(randomDirection == 1 && randomPoint.column < grid[0].length -1 && randomPoint.column > 0 && randomPoint.row < grid.length -1  && randomPoint.row > 0 && grid[randomPoint.row + 1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column + 1] == 3 && grid[randomPoint.row -1][randomPoint.column] ==3 && grid[randomPoint.row][randomPoint.column -1] ==3){
+          grid[randomPoint.row][randomPoint.column] = 3;
+          grid[randomPoint.row][randomPoint.column +1] =2;
+        }
+
+        // sand flowing more naturally in water (to the left)
+        // check if the random direction is 2 (to the left), check if it's not the leftmost column, check it's not the rightmost column, check that it isn't the bottom row, check that the surrounding points are water, check that the point below is sand
+        else if(randomDirection == 2 && randomPoint.column > 0 && randomPoint.column < grid[0].length -1 && randomPoint.row < grid.length -1 && randomPoint.row > 0 && grid[randomPoint.row + 1][randomPoint.column] == 2 && grid[randomPoint.row][randomPoint.column - 1] == 3 && grid[randomPoint.row][randomPoint.column +1] ==3 && grid[randomPoint.row -1][randomPoint.column] == 3){
+          grid[randomPoint.row][randomPoint.column] = 3;
+          grid[randomPoint.row][randomPoint.column -1] =2;
         }
 
       }
@@ -137,10 +155,23 @@ public class Solution {
           grid[randomPoint.row][randomPoint.column] =0;
           grid[randomPoint.row][randomPoint.column +1] = 3;
         }
+
+        // verify direction is 1, verify column is third from last column, point to the right is metal, two points to the right is empty, point below is water
+        else if (randomDirection == 1 && randomPoint.row < grid.length -1 && randomPoint.column < grid[0].length -2 && grid[randomPoint.row][randomPoint.column +1] ==1 && grid[randomPoint.row][randomPoint.column + 2] == 0 && grid[randomPoint.row +1][randomPoint.column] == 3) {
+          grid[randomPoint.row][randomPoint.column] =0;
+          grid[randomPoint.row][randomPoint.column +2] = 3;
+        }
+
         // if the direction is 2, the column of the random point on the grid is the second column or greater, and the point to the left is empty, the water particle moves to the left
         else if (randomDirection == 2 && randomPoint.column > 0 && grid[randomPoint.row][randomPoint.column - 1] == 0) {
           grid[randomPoint.row][randomPoint.column] =0;
           grid[randomPoint.row][randomPoint.column -1] = 3;
+        }
+
+        // verify direction is 2, verify column is third from left, point to the left is metal, two points to the left is empty, point below is water
+        else if (randomDirection == 2 && randomPoint.row < grid.length -1 && randomPoint.column > 1  && grid[randomPoint.row][randomPoint.column -1] ==1 && grid[randomPoint.row][randomPoint.column - 2] == 0 && grid[randomPoint.row +1][randomPoint.column] == 3) {
+          grid[randomPoint.row][randomPoint.column] =0;
+          grid[randomPoint.row][randomPoint.column -2] = 3;
         }
 
       }
