@@ -1,4 +1,6 @@
-DNA
+# DNA Lab
+
+# Background
 DNA, the carrier of genetic information in living things, has been used in criminal justice for decades. But how, exactly, does DNA profiling work? Given a sequence of DNA, how can forensic investigators identify to whom it belongs?
 
 Well, DNA is really just a sequence of molecules called nucleotides, arranged into a particular shape (a double helix). Each nucleotide of DNA contains one of four different bases: adenine (A), cytosine (C), guanine (G), or thymine (T). Every human cell has billions of these nucleotides arranged in sequence. Some portions of this sequence (i.e. genome) are the same, or at least very similar, across almost all humans, but other portions of the sequence have a higher genetic diversity and thus vary more across the population.
@@ -23,7 +25,7 @@ Your task is to write a program that will take a DNA database with STR counts fo
 
 Source: http://nifty.stanford.edu/2020/dna/.
 
-Input
+# Input
 The first line of the input contains S: the number of STRs, followed by the STRs themselves. Each STR is a string containing capital latin letters A, C, G, or T.
 
 The next line contains N: the number of people in the database.
@@ -34,5 +36,5 @@ The next line contains M: the number of samples to identify.
 
 The following M lines are test cases: strings containing capital latin letters A, C, G, or T.
 
-Output
+# Output
 For each sample, output one line containing Case #x: y, where x is the sample number (starting from 1), and y is either the name of the person, to whom the sample belongs, or string No match if such person does not exist in the database.
