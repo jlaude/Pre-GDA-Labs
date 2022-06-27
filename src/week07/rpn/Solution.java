@@ -185,7 +185,6 @@ public class Solution {
        try (Scanner in = new Scanner(System.in)) {
            while (in.hasNextLine()) {
                String line = in.nextLine();
-               //System.out.println(rpn(in.nextLine()));
 
                double result = rpn(line);
                System.out.println(result);
