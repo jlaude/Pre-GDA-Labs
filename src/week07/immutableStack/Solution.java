@@ -101,7 +101,6 @@ public class Solution {
        public int size() {
            return stackSize;
        }
-       // TODO
    }
  
    public static class EmptyStack<String> implements ImmutableStack<String> {
