@@ -1,4 +1,4 @@
-Points
+# Points
 Define a class for a 2D point (as x and y coordinates), a segment (as two points), a triangle (as three points), a rectangle with sides parallel to the coordinate axes (as its diagonal segment: the segment going from the bottom left corner to the top right corner).
 
 For the segment: implement a constructor from two points and a member function computing the length of the segment.
@@ -15,10 +15,11 @@ The triangle area
 The triangle perimeter
 The containing rectangle area
 The containing rectangle perimeter
-Input
+
+## Input
 The first line of the input contains T: the number of test cases. T test cases follow.
 
 Each test case is a line containing six integer numbers: x1, y1, x2, y2, x3, and y3, where (xi,yi) are the coordinates of the i-th point of the triangle.
 
-Output
+## Output
 For each test case, output one line containing Case #t: Ta Tp Ra Rp, where t is the test case number (starting from 1), Ta is the triangle area, Tp is the triangle perimeter, Ra is the containing rectangle area, Ra is the containing rectangle perimeter. All numbers must be output rounded to 2 decimal digits after the comma (using "%.2f" format string in System.out.printf.)
