@@ -1,121 +1,50 @@
 package gdaAssessment.task2;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Solution {
 
-    static class interleavedStrings {
 
-        String strA;
-        String strB;
-        int strALength;
-        int strBLength;
+    public static ArrayList<String> interleave(String strA, String strB) {
 
-        public interleavedStrings(String strA, String strB) {
-            this.strA = strA;
-            this.strB = strB;
-            this.strALength = strA.length();
-            this.strBLength = strB.length();
+        ArrayList<String> interleavedResultArray = new ArrayList<>();
+
+        // recursion stop condition when it's moved strB all the way through string A and vice versa
+        if (strB.isEmpty()) {
+            interleavedResultArray.add(strA);
+        } else if (strA.isEmpty()) {
+            interleavedResultArray.add(strB);
+        } else {
+            iterateThroughStringA(interleavedResultArray, 0, strA, strB);
         }
 
-        public void interleave( int moveIndex) {
+        return interleavedResultArray;
 
+    }
 
-            // recursion stop condition when it's moved strB all the way through string A
-            if (moveIndex > strALength) {
-                return;
-            }
+    public static void iterateThroughStringA (ArrayList<String> resultArray, int strAIterator, String strA, String strB) {
 
-            StringBuilder resultString = new StringBuilder();
-
-            // build beginning result string - for example if the input string is abc123 and the index is 1, string will be ab1c23; index is 2, result string is a1bc23, and so on
-            resultString.append(strA.substring(0, strALength - moveIndex));
-            resultString.append(strB.charAt(0));
-            resultString.append(strA.substring(strALength - moveIndex));
-            resultString.append(strB.substring(1));
-
-
-            /*
-            // print the initial seeded result string
-            if (checkNonRepeatingAdjacentChars(resultString.toString(), strALength - moveIndex)) {
-                System.out.println(resultString);
-            }
-             */
-            System.out.println(resultString);
-
-            // iterating through the remaining chars in string B, moving them to the left one character at a time
-            for (int characterBIndex = 1; characterBIndex <= strBLength - 1; characterBIndex++) {
-
-                //moving each remaining character in strB one place at a time to the left, until it hits the move index
-                swapChars(resultString, characterBIndex, moveIndex, 0);
-
-            }
-            interleave(moveIndex + 1);
-
+        if (strAIterator > strA.length()) {
+            return;
         }
 
-        public void swapChars (StringBuilder resultString, int characterBIndex, int moveIndex, int moveCharBLeftIterator) {
-
-            // recursion stop condition when the character has been moved all the way through string A up to the current move Index
-            if (moveCharBLeftIterator == moveIndex) {
-                return;
-            }
-
-            char currentChar = resultString.charAt(strALength + characterBIndex - moveCharBLeftIterator);
-            char prevChar = resultString.charAt(strALength + characterBIndex - moveCharBLeftIterator - 1);
-
-            resultString.setCharAt(strALength + characterBIndex - moveCharBLeftIterator, prevChar);
-            resultString.setCharAt(strALength + characterBIndex - moveCharBLeftIterator - 1, currentChar);
-
-            /*
-            // Ensuring there are no repeated characters
-            if (checkNonRepeatingAdjacentChars(resultString.toString(), strALength + characterBIndex - moveCharBLeftIterator - 1)) {
-                System.out.println(resultString);
-            }
-             */
-            System.out.println(resultString);
-
-
-            swapChars(resultString, characterBIndex, moveIndex, moveCharBLeftIterator + 1);
+        for (Iterator<String> iter = interleave(strA.substring(strAIterator), strB.substring(1)).iterator(); iter.hasNext();) {
+            //if (! (strA.charAt(strA.length() -1) == strB.charAt(0) || strB.charAt(0) == iter.next().charAt(0))) {
+                resultArray.add(strA.substring(0, strAIterator) + strB.charAt(0) + iter.next());
+            //}
         }
+
+        iterateThroughStringA(resultArray, strAIterator +1, strA, strB);
+
     }
 
     public static void main(String[] args) {
-        String strA = "abc";
-        String strB = "cab";
-        String str = strA + strB;
 
-        //if (checkNonRepeatingAdjacentChars(str, strA.length())) {System.out.println(str);}
-        System.out.println(str);
+        String strA = "123";
+        String strB = "abc";
+        System.out.println(interleave(strA,strB));
 
-        interleavedStrings iLS = new interleavedStrings(strA, strB);
-        // seeing the initial 'moveIndex' (moveIndex keeps track of how far the first character in strB has moved through strA)
-        iLS.interleave(1);
     }
-
-    public static boolean checkNonRepeatingAdjacentChars (String resultString, int locationOfCharB) {
-
-        char currentChar = resultString.charAt(locationOfCharB);
-
-        boolean result = false;
-
-        if (locationOfCharB == resultString.length() - 1) {
-            char prevChar = resultString.charAt(locationOfCharB - 1);
-            if (!(currentChar == prevChar)) {
-                result = true;
-            }
-        } else if (locationOfCharB >= 1) {
-            char nextChar = resultString.charAt(locationOfCharB + 1);
-            char prevChar = resultString.charAt(locationOfCharB - 1);
-            if (!(currentChar == prevChar || currentChar == nextChar)) {
-                result = true;
-            }
-        } else if (locationOfCharB == 0){
-            char nextChar = resultString.charAt(locationOfCharB + 1);
-            if (!(currentChar == nextChar)) {
-                result = true;
-            }
-        }
-        return result;
-    }
-
 
 }
