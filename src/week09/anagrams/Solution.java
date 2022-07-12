@@ -1,4 +1,7 @@
+package week09.anagrams;
+
 import java.util.Arrays;
+import java.util.Scanner;
 
 /** Starter code for the Anagrams problem. */
 public class Solution {
