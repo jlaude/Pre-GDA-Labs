@@ -32,7 +32,6 @@ public class Solution {
 
             // check if the hashmap contains an int the difference between the sum target and the current key, ensure the difference isn't equal to the key for corner case (ex: sum value 2, key 1)
             if (inputSet.containsKey(sumTarget-k) && (sumTarget-k) !=k ) {
-
                 result.set(true);
             }
             // if the input integer multiplied by 2 equals the sum target, ensure that it occurred twice in the input string

@@ -1,6 +1,7 @@
 package week09.anagrams;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /** Starter code for the Anagrams problem. */
@@ -31,10 +32,27 @@ public class Solution {
    */
   public static class AnagramGrouper {
 
+
+    HashMap<String, String> anagramHashMap = new HashMap<>();
+
     /** Constructs an AnagramGrouper from the given array of Strings. */
     public AnagramGrouper(String[] words) {
-      // TODO: Create a map where the value is a set of words that are anagrams of each other, and
       // the key is the letters of those words alphabetized. Populate it with the given words.
+
+
+      for (String s : words) {
+        char[] tempCharArray = s.toCharArray();
+        Arrays.sort(tempCharArray);
+        String sortedString = String.valueOf(tempCharArray);
+
+        if (!anagramHashMap.containsKey(sortedString)) {
+          anagramHashMap.put(sortedString, s);
+        } else if (!anagramHashMap.containsValue(s)) {
+          anagramHashMap.put(sortedString, anagramHashMap.get(sortedString) + "," + s);
+        }
+
+      }
+
     }
 
     /**
@@ -42,8 +60,14 @@ public class Solution {
      * appears in this AnagramGrouper.
      */
     public int getNumberOfAnagrams(String word) {
-      // TODO: implement this function
-      return -1;
+      String sortedWord = createKey(word);
+
+      if (anagramHashMap.containsKey(sortedWord)) {
+        String[] arrayOfAnagrams = anagramHashMap.get(sortedWord).split(",");
+        return arrayOfAnagrams.length;
+      } else {
+        return 0;
+      }
     }
 
     /**
