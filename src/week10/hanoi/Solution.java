@@ -8,9 +8,7 @@ public class Solution {
 
         if (m > 0) {
             hanoi(m - 1, source, spare, target);
-
             System.out.println(source + " " + target);
-
             hanoi(m - 1, spare, target, source);
         }
 
